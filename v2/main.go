@@ -9,7 +9,7 @@ func main() {
 
 	app := App{}
 	app.Initialize()
-	app.populate_routes()
+	app.PopulateRoutes()
 	app.run(":8080")
 
 	// log.Fatal(http.ListenAndServe(":8080", a.Initialize()))
