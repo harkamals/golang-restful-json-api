@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -11,29 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func json_encoder(w http.ResponseWriter, statusCode int, input interface{}) {
-
-	fmt.Println("Encoding..")
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(statusCode)
-
-	encoder := json.NewEncoder(w)
-	encoder.SetIndent("", " ")
-
-	if err:= encoder.Encode(input); err!=nil{
-		panic(err)
-	}
-
-
-
-}
-
-func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Welcome!\n")
-}
-
-func TodoIndex(w http.ResponseWriter, r *http.Request) {
+func todo_list(w http.ResponseWriter, r *http.Request) {
 	json_encoder(w, http.StatusOK, todos)
 }
 

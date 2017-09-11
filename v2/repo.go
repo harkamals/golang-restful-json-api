@@ -8,6 +8,7 @@ var todos Todos
 
 // Give us some seed data
 func init() {
+	fmt.Println("Init: Repo")
 	RepoCreateTodo(Todo{Name: "Write presentation"})
 	RepoCreateTodo(Todo{Name: "Host meetup"})
 }
