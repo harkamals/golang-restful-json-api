@@ -2,8 +2,12 @@
 
 ## Start web server
 ```sh
-# Run example 1
+# Run example 1 (in-memory processing)
 go run ./v1/*.go
+```
+```sh
+# Run example 2 (database backend)
+go run ./v2/*.go
 ```
 
 ## Running Examples
