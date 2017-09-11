@@ -2,9 +2,6 @@ package main
 
 import (
 	"fmt"
-	_ "github.com/gorilla/mux"
-	_"net/http"
-	_"log"
 )
 
 func main() {
@@ -12,6 +9,7 @@ func main() {
 
 	app := App{}
 	app.Initialize()
+	app.populate_routes()
 	app.run(":8080")
 
 	// log.Fatal(http.ListenAndServe(":8080", a.Initialize()))

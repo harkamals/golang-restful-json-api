@@ -5,6 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"log"
+	"fmt"
 )
 
 type App struct {
@@ -12,6 +13,7 @@ type App struct {
 }
 
 func (app *App) Initialize() *mux.Router {
+	fmt.Println("App Initialize")
 
 	app.Router = mux.NewRouter().StrictSlash(true)
 
@@ -34,6 +36,15 @@ func (app *App) Initialize() *mux.Router {
 
 func (app *App) run(addr string) {
 	log.Fatal(http.ListenAndServe(addr, app.Router))
+}
+
+// List of /paths
+var routing_list []string
+
+func (app *App) populate_routes() {
+	for _, r := range routes {
+		routing_list = append(routing_list, r.Pattern)
+	}
 }
 
 //func NewRouter() *mux.Router {

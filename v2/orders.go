@@ -24,7 +24,10 @@ var orderId int
 var orders Orders
 
 func orders_list(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println("Orders List")
 	json_encoder(w, http.StatusOK, orders)
+
 }
 
 func init() {

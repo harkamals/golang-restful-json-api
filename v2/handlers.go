@@ -8,7 +8,18 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"fmt"
 )
+
+func Index(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Index called")
+	fmt.Fprint(w, "Welcome\n")
+
+	for _, route:= range routing_list{
+		fmt.Fprint(w, route, "\n")
+	}
+
+}
 
 func todo_list(w http.ResponseWriter, r *http.Request) {
 	json_encoder(w, http.StatusOK, todos)
