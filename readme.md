@@ -1,4 +1,4 @@
-### ToDo app: Restful JSON API
+### Restful JSON API
 
 ##### v2: Perform Tests
 ```sh
