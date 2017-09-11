@@ -15,15 +15,17 @@ func json_encoder(w http.ResponseWriter, statusCode int, input interface{}) {
 
 	fmt.Println("Encoding..")
 
-	w.Header().Set("Content-Type", "application/json;charset=UTF-8")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(statusCode)
 
 	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", " ")
+
 	if err:= encoder.Encode(input); err!=nil{
 		panic(err)
 	}
 
-	// encoder.SetIndent("", " ")
+
 
 }
 
