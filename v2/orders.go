@@ -4,10 +4,16 @@ import (
 	"net/http"
 	"fmt"
 	"time"
+	_ "github.com/lib/pq"
+	"database/sql"
+	"errors"
 )
 
 type Order struct {
-	Id    int
+	Id    int     `json:"id"`
+	Name  string  `json:"name"`
+	Price float64 `json:"price"`
+
 	Type  string
 	Owner string
 	//CostCentre int
@@ -16,6 +22,22 @@ type Order struct {
 	Created time.Time
 	Expiry  time.Time
 	//Deleted    time.Time
+}
+
+func (o *Order) getOrder(db *sql.DB) error {
+	return errors.New("not implemented")
+}
+
+func (o *Order) updateOrder(db *sql.DB) error {
+	return errors.New("not implemented")
+}
+
+func (o *Order) deleteOrder(db *sql.DB) error {
+	return errors.New("not implemented")
+}
+
+func (o *Order) createOrder(db *sql.DB) error {
+	return errors.New("not implemented")
 }
 
 type Orders []Order
@@ -45,5 +67,3 @@ func RepoCreateorder(order Order) Order {
 	orders = append(orders, order)
 	return order
 }
-
-

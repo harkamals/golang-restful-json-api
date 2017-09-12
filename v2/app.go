@@ -12,7 +12,8 @@ type App struct {
 	Router *mux.Router
 }
 
-func (app *App) Initialize() *mux.Router {
+func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
+
 	fmt.Println("App initializing..")
 
 	app.Router = mux.NewRouter().StrictSlash(true)
