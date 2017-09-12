@@ -10,19 +10,45 @@ import (
 	"os"
 	"net/http"
 	"net/http/httptest"
+	"log"
 )
 
 var a main.App
 
+const tableCreationQuery = `CREATE TABLE IF NOT EXISTS orders
+(
+id SERIAL,
+NAME TEXT NOT NULL,
+price NUMERIC (10, 2) NOT NULL DEFAULT 0.00,
+CONSTRAINT orders_pkey PRIMARY KEY (id)
+)`
+
 func TestMain(m *testing.M) {
 
 	a = main.App{}
-	a.Initialize()
+	a.Initialize(
+		"postgres",
+		"postgres",
+		"postgres")
+
 	a.PopulateRoutes()
 
+	ensureTableExists()
 	code := m.Run()
-	os.Exit(code)
+	clearTable()
 
+	os.Exit(code)
+}
+
+func ensureTableExists() {
+	if _, err := a.DB.Exec(tableCreationQuery); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func clearTable() {
+	a.DB.Exec("DELETE FROM orders")
+	a.DB.Exec("ALTER SEQUENCE orders_id_seq RESTART WITH 1")
 }
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
@@ -37,7 +63,6 @@ func checkResponseCode(t *testing.T, expected, actual int) {
 		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
 	}
 }
-
 
 func TestGetOrders(t *testing.T) {
 

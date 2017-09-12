@@ -6,15 +6,26 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"fmt"
+	"database/sql"
 )
 
 type App struct {
 	Router *mux.Router
+	DB     *sql.DB
 }
 
 func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
 
 	fmt.Println("App initializing..")
+
+	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", dbUser, dbPass, db)
+
+	var err error
+	app.DB, err = sql.Open("postgres", connectionString)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	app.Router = mux.NewRouter().StrictSlash(true)
 

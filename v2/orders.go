@@ -24,6 +24,10 @@ type Order struct {
 	//Deleted    time.Time
 }
 
+func getOrders(db *sql.DB, start, count int) ([]Order, error) {
+	return nil, errors.New("not implemented")
+}
+
 func (o *Order) getOrder(db *sql.DB) error {
 	return errors.New("not implemented")
 }
