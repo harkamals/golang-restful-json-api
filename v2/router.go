@@ -42,7 +42,6 @@ func (app *App) run(addr string) {
 var routing_list []string
 
 func (app *App) PopulateRoutes() {
-	println("Populating routes..")
 	for _, r := range routes {
 		routing_list = append(routing_list, r.Pattern)
 	}

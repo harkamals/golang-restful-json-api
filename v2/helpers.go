@@ -2,13 +2,10 @@ package main
 
 import (
 	"net/http"
-	"fmt"
 	"encoding/json"
 )
 
 func json_encoder(w http.ResponseWriter, statusCode int, input interface{}) {
-
-	fmt.Println("JSON:encoding..")
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(statusCode)
@@ -16,7 +13,7 @@ func json_encoder(w http.ResponseWriter, statusCode int, input interface{}) {
 	encoder := json.NewEncoder(w)
 	encoder.SetIndent("", " ")
 
-	if err:= encoder.Encode(input); err!=nil{
+	if err := encoder.Encode(input); err != nil {
 		panic(err)
 	}
 
