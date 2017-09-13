@@ -18,3 +18,7 @@ func json_encoder(w http.ResponseWriter, statusCode int, input interface{}) {
 	}
 
 }
+
+func respondWithError(w http.ResponseWriter, code int, message string) {
+	json_encoder(w, code, map[string]string{"error": message})
+}

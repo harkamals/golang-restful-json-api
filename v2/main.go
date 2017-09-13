@@ -8,7 +8,7 @@ func main() {
 		"postgres",
 		"postgres")
 
-	app.PopulateRoutes()
+	// app.PopulateRoutes()
 	app.run(":8080")
 
 }

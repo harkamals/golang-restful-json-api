@@ -7,16 +7,18 @@ import (
 	"log"
 	"fmt"
 	"database/sql"
+	"strconv"
 )
 
 type App struct {
 	Router *mux.Router
 	DB     *sql.DB
+	Routes []Route
 }
 
 func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
 
-	fmt.Println("App initializing..")
+	fmt.Println("App is initializing..")
 
 	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", dbUser, dbPass, db)
 
@@ -28,20 +30,7 @@ func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
 	}
 
 	app.Router = mux.NewRouter().StrictSlash(true)
-
-	for _, route := range routes {
-		var handler http.Handler
-
-		handler = route.HandlerFunc
-		handler = Logger(handler, route.Name)
-
-		app.Router.
-			Methods(route.Method).
-			Path(route.Pattern).
-			Name(route.Name).
-			Handler(handler)
-
-	}
+	app.initializeRoutes()
 
 	return app.Router
 }
@@ -50,31 +39,25 @@ func (app *App) run(addr string) {
 	log.Fatal(http.ListenAndServe(addr, app.Router))
 }
 
-// List of /paths
-var routing_list []string
+func (app *App) getOrder(w http.ResponseWriter, r *http.Request) {
 
-func (app *App) PopulateRoutes() {
-	for _, r := range routes {
-		routing_list = append(routing_list, r.Pattern)
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "invalid order id")
+		return
 	}
-}
 
-//func NewRouter() *mux.Router {
-//
-//	router := mux.NewRouter().StrictSlash(true)
-//	for _, route := range routes {
-//		var handler http.Handler
-//
-//		handler = route.HandlerFunc
-//		handler = Logger(handler, route.Name)
-//
-//		router.
-//		Methods(route.Method).
-//			Path(route.Pattern).
-//			Name(route.Name).
-//			Handler(handler)
-//
-//	}
-//
-//	return router
-//}
+	o := Order{Id: id}
+	if err := o.getOrder(app.DB); err != nil {
+		switch err {
+		case sql.ErrNoRows:
+			respondWithError(w, http.StatusNotFound, "order not found")
+		default:
+			respondWithError(w, http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+	json_encoder(w, http.StatusOK, o)
+
+}

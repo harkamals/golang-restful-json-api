@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"log"
+	"github.com/spf13/viper"
 )
 
 var a main.App
@@ -25,11 +26,15 @@ CONSTRAINT orders_pkey PRIMARY KEY (id)
 
 func TestMain(m *testing.M) {
 
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	viper.ReadInConfig()
+
 	a = main.App{}
 	a.Initialize(
-		"postgres",
-		"postgres",
-		"postgres")
+		viper.GetString("testing.dbUser"),
+		viper.GetString("testing.dbPass"),
+		viper.GetString("testing.db"))
 
 	a.PopulateRoutes()
 
@@ -50,6 +55,26 @@ func clearTable() {
 	a.DB.Exec("DELETE FROM orders")
 	a.DB.Exec("ALTER SEQUENCE orders_id_seq RESTART WITH 1")
 }
+
+func TestEmptyTable(t *testing.T) {
+	clearTable()
+
+	req, _ := http.NewRequest("GET", "/orders", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	if body := response.Body.String(); body != "[]" {
+		t.Errorf("Expected an empty array. Got %s", body)
+	}
+}
+
+
+
+
+
+
+
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
@@ -79,3 +104,4 @@ func TestGetTodos(t *testing.T) {
 
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
+

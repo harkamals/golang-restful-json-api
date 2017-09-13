@@ -11,14 +11,11 @@ import (
 	"fmt"
 )
 
-func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Index called")
+func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Welcome\n")
-
-	for _, route:= range routing_list{
-		fmt.Fprint(w, route, "\n")
+	for _, route := range app.Routes {
+		fmt.Fprint(w, route.Pattern, "\n")
 	}
-
 }
 
 func todo_list(w http.ResponseWriter, r *http.Request) {
