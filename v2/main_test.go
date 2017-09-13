@@ -5,13 +5,13 @@
 package main_test
 
 import (
-	"testing"
 	"."
-	"os"
+	"github.com/spf13/viper"
+	"log"
 	"net/http"
 	"net/http/httptest"
-	"log"
-	"github.com/spf13/viper"
+	"os"
+	"testing"
 )
 
 var a main.App
@@ -35,8 +35,6 @@ func TestMain(m *testing.M) {
 		viper.GetString("testing.dbUser"),
 		viper.GetString("testing.dbPass"),
 		viper.GetString("testing.db"))
-
-	a.PopulateRoutes()
 
 	ensureTableExists()
 	code := m.Run()
@@ -69,13 +67,6 @@ func TestEmptyTable(t *testing.T) {
 	}
 }
 
-
-
-
-
-
-
-
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
 	a.Router.ServeHTTP(rr, req)
@@ -104,4 +95,3 @@ func TestGetTodos(t *testing.T) {
 
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
-
