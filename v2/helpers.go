@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+type jsonErr struct {
+	Code int    `json:"code"`
+	Text string `json:"text"`
+}
+
 func json_encoder(w http.ResponseWriter, statusCode int, input interface{}) {
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
