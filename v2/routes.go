@@ -46,6 +46,12 @@ func (app *App) initializeRoutes() {
 			"/order/{id:[0-9]+}",
 			app.getOrder,
 		},
+		//Route{
+		//	"Orders",
+		//	"GET",
+		//	"/orders",
+		//	getOrders,
+		//},
 	}
 
 	for _, route := range app.Routes {
