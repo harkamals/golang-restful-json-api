@@ -27,7 +27,9 @@ func TodoShow(w http.ResponseWriter, r *http.Request) {
 	var todoId int
 	var err error
 	if todoId, err = strconv.Atoi(vars["todoId"]); err != nil {
-		panic(err)
+		// error
+		json_encoder(w, http.StatusInternalServerError, jsonErr{Code: http.StatusInternalServerError, Text: "??"})
+		return
 	}
 	todo := RepoFindTodo(todoId)
 	if todo.Id > 0 {
