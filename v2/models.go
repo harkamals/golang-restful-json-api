@@ -73,7 +73,7 @@ func getOrders(db *sql.DB, start, count int) ([]Order, error) {
 //var orders Orders
 //
 //func orders_list(w http.ResponseWriter, r *http.Request) {
-//	json_encoder(w, http.StatusOK, orders)
+//	respondWithJSON(w, http.StatusOK, orders)
 //}
 
 func init() {

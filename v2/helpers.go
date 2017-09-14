@@ -12,7 +12,7 @@ type jsonErr struct {
 	Text string `json:"text"`
 }
 
-func json_encoder(w http.ResponseWriter, statusCode int, input interface{}) {
+func respondWithJSON(w http.ResponseWriter, statusCode int, input interface{}) {
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(statusCode)
@@ -27,7 +27,7 @@ func json_encoder(w http.ResponseWriter, statusCode int, input interface{}) {
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
-	json_encoder(w, code, jsonErr{Code: code, Text: message})
+	respondWithJSON(w, code, jsonErr{Code: code, Text: message})
 }
 
 func Logger(inner http.Handler, name string) http.Handler {

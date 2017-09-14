@@ -7,8 +7,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gorilla/mux"
+	"database/sql"
 	"fmt"
+	"github.com/gorilla/mux"
 )
 
 func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
@@ -18,8 +19,75 @@ func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app *App) getOrders(w http.ResponseWriter, r *http.Request) {
+
+	count, _ := strconv.Atoi(r.FormValue("count"))
+	start, _ := strconv.Atoi(r.FormValue("start"))
+
+	if count > 10 || count < 1 {
+		count = 10
+	}
+
+	if start < 0 {
+		start = 0
+	}
+
+	orders, err := getOrders(app.DB, start, count)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, orders)
+
+}
+
+func (app *App) getOrder(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "invalid order id")
+		return
+	}
+
+	o := Order{Id: id}
+	if err := o.getOrder(app.DB); err != nil {
+		switch err {
+		case sql.ErrNoRows:
+			respondWithError(w, http.StatusNotFound, "order not found")
+		default:
+			respondWithError(w, http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+	respondWithJSON(w, http.StatusOK, o)
+
+}
+
+func (app *App) createOrder(w http.ResponseWriter, r *http.Request) {
+
+	var o Order
+	decoder := json.NewDecoder(r.Body)
+
+	if err := decoder.Decode(&o); err != nil {
+		respondWithError(w, http.StatusBadRequest, "invalid request payload")
+		return
+	}
+	defer r.Body.Close()
+
+	if err := o.createOrder(app.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusCreated, o)
+
+}
+
+// TODOS app
 func todo_list(w http.ResponseWriter, r *http.Request) {
-	json_encoder(w, http.StatusOK, todos)
+	respondWithJSON(w, http.StatusOK, todos)
 }
 
 func TodoShow(w http.ResponseWriter, r *http.Request) {
@@ -28,19 +96,19 @@ func TodoShow(w http.ResponseWriter, r *http.Request) {
 	var err error
 	if todoId, err = strconv.Atoi(vars["todoId"]); err != nil {
 		// error
-		json_encoder(w, http.StatusInternalServerError, jsonErr{Code: http.StatusInternalServerError, Text: "??"})
+		respondWithJSON(w, http.StatusInternalServerError, jsonErr{Code: http.StatusInternalServerError, Text: "??"})
 		return
 	}
 	todo := RepoFindTodo(todoId)
 	if todo.Id > 0 {
 
-		json_encoder(w, http.StatusOK, todo)
+		respondWithJSON(w, http.StatusOK, todo)
 		return
 
 	}
 
 	// If we didn't find it, 404
-	json_encoder(w, http.StatusNotFound, jsonErr{Code: http.StatusNotFound, Text: "Not Found"})
+	respondWithJSON(w, http.StatusNotFound, jsonErr{Code: http.StatusNotFound, Text: "Not Found"})
 
 }
 
@@ -57,10 +125,10 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.Unmarshal(body, &todo); err != nil {
-		json_encoder(w, 422, err)
+		respondWithJSON(w, 422, err)
 	}
 
 	t := RepoCreateTodo(todo)
-	json_encoder(w, http.StatusCreated, t)
+	respondWithJSON(w, http.StatusCreated, t)
 
 }

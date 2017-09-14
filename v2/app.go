@@ -3,10 +3,10 @@ package main
 import (
 	"net/http"
 
+	"database/sql"
+	"fmt"
 	"github.com/gorilla/mux"
 	"log"
-	"fmt"
-	"database/sql"
 	"strconv"
 )
 
@@ -37,27 +37,4 @@ func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
 
 func (app *App) run(addr string) {
 	log.Fatal(http.ListenAndServe(addr, app.Router))
-}
-
-func (app *App) getOrder(w http.ResponseWriter, r *http.Request) {
-
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "invalid order id")
-		return
-	}
-
-	o := Order{Id: id}
-	if err := o.getOrder(app.DB); err != nil {
-		switch err {
-		case sql.ErrNoRows:
-			respondWithError(w, http.StatusNotFound, "order not found")
-		default:
-			respondWithError(w, http.StatusInternalServerError, err.Error())
-		}
-		return
-	}
-	json_encoder(w, http.StatusOK, o)
-
 }
