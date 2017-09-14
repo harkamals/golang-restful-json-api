@@ -85,6 +85,38 @@ func (app *App) createOrder(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (app *App) updateOrder(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "invalid order id")
+		return
+	}
+
+	var o Order
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&o); err != nil {
+		respondWithError(w, http.StatusBadRequest, "invalid request payload")
+		return
+	}
+
+	defer r.Body.Close()
+	o.Id = id
+
+	if err := o.updateOrder(app.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusInternalServerError, o)
+
+}
+
+func (app *App) deleteOrder(w http.ResponseWriter, r *http.Request) {
+
+}
+
 // TODOS app
 func todo_list(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, todos)
