@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"time"
-	_ "github.com/lib/pq"
 	"database/sql"
+	"fmt"
+	_ "github.com/lib/pq"
+	"time"
 )
 
 type Order struct {
