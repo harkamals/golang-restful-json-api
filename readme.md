@@ -4,15 +4,18 @@
 
 ```sh
 # Version 2
-+ Orders model
-+ Use postgresql as database backend
-+ Testing
-~ Refactoring
-  Viper for configuration mgmt
+  + Using GORM - in-progress
+ 
+# Version 2
+  + Orders model
+  + Use postgresql as database backend
+  + Testing
+  ~ Refactoring
+   Viper for configuration mgmt
  
 # Version 1
-+ Initial release
-+ In-memory 'todo' app model
+  + Initial release
+  + In-memory 'todo' app model
 ```
 
 ##### Perform Tests
