@@ -6,11 +6,14 @@ package main_test
 
 import (
 	"."
+	"encoding/json"
 	"github.com/spf13/viper"
 	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -62,7 +65,7 @@ func TestEmptyTable(t *testing.T) {
 
 	checkResponseCode(t, http.StatusOK, response.Code)
 
-	if body := response.Body.String(); body != "[]" {
+	if body := response.Body.String(); strings.TrimSpace(body) != "[]" {
 		t.Errorf("Expected an empty array. Got %s", body)
 	}
 }
@@ -86,6 +89,7 @@ func TestGetOrders(t *testing.T) {
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
+
 }
 
 func TestGetTodos(t *testing.T) {
@@ -94,4 +98,40 @@ func TestGetTodos(t *testing.T) {
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
+}
+
+func TestGetNonExistentProduct(t *testing.T) {
+	clearTable()
+
+	req, _ := http.NewRequest("GET", "/order/999", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusNotFound, response.Code)
+
+	var m map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &m)
+
+	if m["text"] != "order not found" {
+		t.Errorf("Expected the 'text' key of the response to be set to 'order not found'. Got '%s'", m["text"])
+	}
+}
+
+func TestGetOrder(t *testing.T) {
+	clearTable()
+	addProducts(1)
+
+	req, _ := http.NewRequest("GET", "/order/1", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+}
+
+func addProducts(count int) {
+	if count < 1 {
+		count = 1
+	}
+
+	for i := 0; i < count; i++ {
+		a.DB.Exec("INSERT INTO orders(name, price) VALUES($1, $2)", "Order "+strconv.Itoa(i), (i+1.0)*10)
+	}
 }
