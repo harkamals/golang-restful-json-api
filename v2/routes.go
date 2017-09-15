@@ -15,6 +15,7 @@ type Routes []Route
 
 func (app *App) initializeRoutes() {
 
+	// Define routes
 	app.Routes = Routes{
 		Route{
 			"Index", "GET", "/", app.TOC,
@@ -45,6 +46,10 @@ func (app *App) initializeRoutes() {
 		},
 	}
 
+	// 404
+	app.Router.NotFoundHandler = http.HandlerFunc(not_found_404)
+
+	// Enumerate routes
 	for _, route := range app.Routes {
 		var handler http.Handler
 

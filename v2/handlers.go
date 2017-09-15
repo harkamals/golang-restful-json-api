@@ -12,6 +12,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func not_found_404(w http.ResponseWriter, r *http.Request) {
+	respondWithError(w, http.StatusNotFound, "not found")
+}
+
 func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Welcome\n")
 	for _, route := range app.Routes {
