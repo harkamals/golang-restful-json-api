@@ -42,7 +42,7 @@ func TestMain(m *testing.M) {
 
 	ensureTableExists()
 	code := m.Run()
-	// clearTable()
+	clearTable()
 
 	os.Exit(code)
 }
