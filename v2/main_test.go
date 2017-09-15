@@ -18,7 +18,7 @@ import (
 	"testing"
 )
 
-var a main.App
+var app main.App
 
 const tableCreationQuery = `CREATE TABLE IF NOT EXISTS orders
 (
@@ -34,8 +34,8 @@ func TestMain(m *testing.M) {
 	viper.AddConfigPath(".")
 	viper.ReadInConfig()
 
-	a = main.App{}
-	a.Initialize(
+	app = main.App{}
+	app.Initialize(
 		viper.GetString("testing.dbUser"),
 		viper.GetString("testing.dbPass"),
 		viper.GetString("testing.db"))
@@ -48,19 +48,19 @@ func TestMain(m *testing.M) {
 }
 
 func ensureTableExists() {
-	if _, err := a.DB.Exec(tableCreationQuery); err != nil {
+	if _, err := app.DB.Exec(tableCreationQuery); err != nil {
 		log.Fatal(err)
 	}
 }
 
 func clearTable() {
-	a.DB.Exec("DELETE FROM orders")
-	a.DB.Exec("ALTER SEQUENCE orders_id_seq RESTART WITH 1")
+	app.DB.Exec("DELETE FROM orders")
+	app.DB.Exec("ALTER SEQUENCE orders_id_seq RESTART WITH 1")
 }
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
-	a.Router.ServeHTTP(rr, req)
+	app.Router.ServeHTTP(rr, req)
 
 	return rr
 }
@@ -132,7 +132,7 @@ func addProducts(count int) {
 	}
 
 	for i := 0; i < count; i++ {
-		a.DB.Exec("INSERT INTO orders(name, price) VALUES($1, $2)", "Order "+strconv.Itoa(i), (i+1.0)*10)
+		app.DB.Exec("INSERT INTO orders(name, price) VALUES($1, $2)", "Order "+strconv.Itoa(i), (i+1.0)*10)
 	}
 }
 
