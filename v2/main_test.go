@@ -84,16 +84,13 @@ func checkResponseCode(t *testing.T, expected, actual int) {
 }
 
 func TestGetOrders(t *testing.T) {
-
 	req, _ := http.NewRequest("GET", "/orders", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
-
 }
 
 func TestGetTodos(t *testing.T) {
-
 	req, _ := http.NewRequest("GET", "/todos", nil)
 	response := executeRequest(req)
 
