@@ -1,14 +1,24 @@
 ### Restful JSON API
 
+##### Change Log
+
+```sh
+# Version 2
++ Orders model
++ Use postgresql as database backend
++ Testing
+~ Refactoring
+  Viper for configuration mgmt
+ 
+# Version 1
++ Initial release
++ In-memory 'todo' app model
+```
+
 ##### v2: Perform Tests
 ```sh
 # Run Tests
 go test ./v2 -v
-```
-##### Running Examples
-
-```sh
-curl http://localhost:8080/orders
 ```
 
 ##### Start web server
@@ -16,21 +26,16 @@ curl http://localhost:8080/orders
 # Run example 2
 go run ./v2/*.go
 ```
-
-##### v1: Start web server
-```sh
-# Run example 1 (in-memory processing)
-go run ./v1/*.go
-```
-##### Running Examples
+##### REST API Endpoints
 
 ```sh
-# List
+# Database backend
+curl http://localhost:8080/orders
+curl http://localhost:8080/order/1
+curl -H "Content-Type: application/json" -d '{"name":"New Order"}'  http://localhost:8080/order
+ 
+# In-memory
 curl http://localhost:8080/todos
- 
-# Filter
 curl http://localhost:8080/todos/1
- 
-# Create New
-curl -H "Content-Type: application/json" -d '{"name":"New Todo"}' http://localhost:8080/todos
+curl -H "Content-Type: application/json" -d '{"name":"New Todo"}'  http://localhost:8080/todos
 ```
