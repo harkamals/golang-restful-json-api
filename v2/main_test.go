@@ -57,6 +57,15 @@ func clearTable() {
 	a.DB.Exec("ALTER SEQUENCE orders_id_seq RESTART WITH 1")
 }
 
+// Model: TODOs
+func TestGetTodos(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/todos", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+}
+
+// Model: Order
 func TestEmptyTable(t *testing.T) {
 	clearTable()
 
@@ -83,20 +92,6 @@ func checkResponseCode(t *testing.T, expected, actual int) {
 	}
 }
 
-func TestGetOrders(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/orders", nil)
-	response := executeRequest(req)
-
-	checkResponseCode(t, http.StatusOK, response.Code)
-}
-
-func TestGetTodos(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/todos", nil)
-	response := executeRequest(req)
-
-	checkResponseCode(t, http.StatusOK, response.Code)
-}
-
 func TestGetNonExistentProduct(t *testing.T) {
 	clearTable()
 
@@ -111,6 +106,13 @@ func TestGetNonExistentProduct(t *testing.T) {
 	if m["text"] != "order not found" {
 		t.Errorf("Expected the 'text' key of the response to be set to 'order not found'. Got '%s'", m["text"])
 	}
+}
+
+func TestGetOrders(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/orders", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
 }
 
 func TestGetOrder(t *testing.T) {
@@ -131,4 +133,22 @@ func addProducts(count int) {
 	for i := 0; i < count; i++ {
 		a.DB.Exec("INSERT INTO orders(name, price) VALUES($1, $2)", "Order "+strconv.Itoa(i), (i+1.0)*10)
 	}
+}
+
+func TestDeleteOrder(t *testing.T) {
+	clearTable()
+	addProducts(1)
+
+	req, _ := http.NewRequest("GET", "/order/1", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	req, _ = http.NewRequest("DELETE", "/order/1", nil)
+	response = executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	req, _ = http.NewRequest("GET", "/order/1", nil)
+	response = executeRequest(req)
+	checkResponseCode(t, http.StatusNotFound, response.Code)
+
 }
