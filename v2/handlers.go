@@ -115,7 +115,7 @@ func (app *App) updateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	respondWithJSON(w, http.StatusInternalServerError, o)
+	respondWithJSON(w, http.StatusOK, o)
 
 }
 
