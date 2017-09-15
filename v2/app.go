@@ -1,13 +1,11 @@
 package main
 
 import (
-	"net/http"
-
 	"database/sql"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"
-	"strconv"
+	"net/http"
 )
 
 type App struct {

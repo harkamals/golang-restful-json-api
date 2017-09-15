@@ -52,6 +52,8 @@ func (app *App) getOrder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	o := Order{Id: id}
+	fmt.Println(o)
+
 	if err := o.getOrder(app.DB); err != nil {
 		switch err {
 		case sql.ErrNoRows:
@@ -114,6 +116,22 @@ func (app *App) updateOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) deleteOrder(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	o := Order{Id: id}
+	if err := o.deleteOrder(app.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 
 }
 

@@ -23,7 +23,7 @@ type Order struct {
 }
 
 func (o *Order) getOrder(db *sql.DB) error {
-	return db.QueryRow("SELECT id, name, price FROM orders where id=$1", o.Id).Scan(&o.Name, &o.Price)
+	return db.QueryRow("SELECT name, price FROM orders WHERE id=$1", o.Id).Scan(&o.Name, &o.Price)
 }
 
 func (o *Order) updateOrder(db *sql.DB) error {

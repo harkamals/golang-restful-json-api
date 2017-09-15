@@ -17,40 +17,31 @@ func (app *App) initializeRoutes() {
 
 	app.Routes = Routes{
 		Route{
-			"Index",
-			"GET",
-			"/",
-			app.TOC,
+			"Index", "GET", "/", app.TOC,
 		},
 		Route{
-			"TodoIndex",
-			"GET",
-			"/todos",
-			todo_list,
+			"TodoIndex", "GET", "/todos", todo_list,
 		},
 		Route{
-			"TodoCreate",
-			"POST",
-			"/todos",
-			TodoCreate,
+			"TodoCreate", "POST", "/todos", TodoCreate,
 		},
 		Route{
-			"TodoShow",
-			"GET",
-			"/todos/{todoId}",
-			TodoShow,
+			"TodoShow", "GET", "/todos/{todoId}", TodoShow,
 		},
 		Route{
-			"Order",
-			"GET",
-			"/order/{id:[0-9]+}",
-			app.getOrder,
+			"Orders", "GET", "/orders", app.getOrders,
 		},
 		Route{
-			"Orders",
-			"GET",
-			"/orders",
-			app.getOrders,
+			"Order", "POST", "/order", app.createOrder,
+		},
+		Route{
+			"Order", "GET", "/order/{id:[0-9]+}", app.getOrder,
+		},
+		Route{
+			"Order", "PUT", "/order/{id:[0-9]+}", app.updateOrder,
+		},
+		Route{
+			"Order", "DELETE", "/order/{id:[0-9]+}", app.deleteOrder,
 		},
 	}
 
