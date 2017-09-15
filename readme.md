@@ -15,7 +15,7 @@
 + In-memory 'todo' app model
 ```
 
-##### v2: Perform Tests
+##### Perform Tests
 ```sh
 # Run Tests
 go test ./v2 -v
@@ -26,7 +26,7 @@ go test ./v2 -v
 # Run example 2
 go run ./v2/*.go
 ```
-##### REST API Endpoints
+##### REST Endpoints
 
 ```sh
 # Database backend
