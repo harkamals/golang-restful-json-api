@@ -22,13 +22,13 @@
 ##### Perform Tests
 ```sh
 # Run Tests
-go test ./v2 -v
+go test ./v3 -v
 ```
 
 ##### Start web server
 ```sh
-# Run example 2
-go run ./v2/*.go
+# Run example 
+go run ./v3/*.go
 ```
 ##### REST Endpoints
 
