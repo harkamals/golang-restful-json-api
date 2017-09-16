@@ -12,7 +12,7 @@
   + Use postgresql as database backend
   + Testing
   ~ Refactoring
-   Viper for configuration mgmt
+    Viper for configuration mgmt
  
 # Version 1
   + Initial release
