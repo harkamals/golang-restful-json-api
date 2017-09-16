@@ -3,7 +3,8 @@
 ##### Change Log
 
 ```sh
-# Version 2
+# Version 3
+  + Logger
   + Using GORM - in-progress
  
 # Version 2
