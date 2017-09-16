@@ -3,9 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
 )
 
 type App struct {
@@ -34,5 +36,6 @@ func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
 }
 
 func (app *App) run(addr string) {
-	log.Fatal(http.ListenAndServe(addr, app.Router))
+	logger := handlers.LoggingHandler(os.Stdout, app.Router)
+	log.Fatal(http.ListenAndServe(addr, logger))
 }
