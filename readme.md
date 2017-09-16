@@ -4,7 +4,7 @@
 
 ```sh
 # Version 3
-  + Logger
+  + Middleware for Logging
   + Using GORM - in-progress
  
 # Version 2
