@@ -56,7 +56,6 @@ func (app *App) getOrder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	o := Order{Id: id}
-	fmt.Println(o)
 
 	if err := o.getOrder(app.DB); err != nil {
 		switch err {
