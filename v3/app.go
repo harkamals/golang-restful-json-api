@@ -37,7 +37,9 @@ func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
 
 func (app *App) run(addr string) {
 	handler := handlers.CombinedLoggingHandler(os.Stdout, app.Router)
-	// handler = handlers.ProxyHeaders(handler)
+
+	//app.Router.PathPrefix("/logs/").Handler(
+	//	http.StripPrefix("/logs/", http.FileServer(http.Dir("/"))))
 
 	log.Fatal(http.ListenAndServe(addr, handler))
 }

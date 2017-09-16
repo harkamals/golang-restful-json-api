@@ -44,10 +44,17 @@ func (app *App) initializeRoutes() {
 		Route{
 			"Order", "DELETE", "/order/{id:[0-9]+}", app.deleteOrder,
 		},
+		//Route{
+		//	"Logs", "GET", "/logs", http.FileServer(http.Dir("/")),
+		//},
 	}
 
 	// 404
 	app.Router.NotFoundHandler = http.HandlerFunc(not_found_404)
+
+	// Logs
+	app.Router.PathPrefix("/logs/").Handler(
+		http.StripPrefix("/logs/", http.FileServer(http.Dir("/"))))
 
 	// Enumerate routes
 	for _, route := range app.Routes {
