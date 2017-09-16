@@ -72,7 +72,7 @@ func checkResponseCode(t *testing.T, expected, actual int) {
 }
 
 // Model: TODOs
-func TestGetTodos(t *testing.T) {
+func Test_GetTodos(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/todos", nil)
 	response := executeRequest(req)
 
@@ -80,7 +80,7 @@ func TestGetTodos(t *testing.T) {
 }
 
 // Model: Order
-func TestEmptyTable(t *testing.T) {
+func Test_EmptyTable(t *testing.T) {
 	clearTable()
 
 	req, _ := http.NewRequest("GET", "/orders", nil)
@@ -93,7 +93,7 @@ func TestEmptyTable(t *testing.T) {
 	}
 }
 
-func TestGetNonExistentProduct(t *testing.T) {
+func Test_GetNonExistentProduct(t *testing.T) {
 	clearTable()
 
 	req, _ := http.NewRequest("GET", "/order/999", nil)
@@ -109,14 +109,14 @@ func TestGetNonExistentProduct(t *testing.T) {
 	}
 }
 
-func TestGetOrders(t *testing.T) {
+func Test_GetOrders(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/orders", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
 
-func TestGetOrder(t *testing.T) {
+func Test_GetOrder(t *testing.T) {
 	clearTable()
 	addProducts(1)
 
@@ -136,7 +136,7 @@ func addProducts(count int) {
 	}
 }
 
-func TestCreateorder(t *testing.T) {
+func Test_Createorder(t *testing.T) {
 	clearTable()
 	payload := []byte(`{"name": "test order", "price": 11.22 }`)
 
@@ -162,7 +162,7 @@ func TestCreateorder(t *testing.T) {
 
 }
 
-func TestUpdateOrder(t *testing.T) {
+func Test_UpdateOrder(t *testing.T) {
 	clearTable()
 	addProducts(1)
 
@@ -195,7 +195,7 @@ func TestUpdateOrder(t *testing.T) {
 	}
 }
 
-func TestDeleteOrder(t *testing.T) {
+func Test_DeleteOrder(t *testing.T) {
 	clearTable()
 	addProducts(1)
 
