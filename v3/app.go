@@ -36,6 +36,8 @@ func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
 }
 
 func (app *App) run(addr string) {
-	logger := handlers.CombinedLoggingHandler(os.Stdout, app.Router)
-	log.Fatal(http.ListenAndServe(addr, logger))
+	handler := handlers.CombinedLoggingHandler(os.Stdout, app.Router)
+	// handler = handlers.ProxyHeaders(handler)
+
+	log.Fatal(http.ListenAndServe(addr, handler))
 }
