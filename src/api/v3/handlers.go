@@ -17,6 +17,11 @@ func not_found_404(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func redirectToHttps(w http.ResponseWriter, r *http.Request) {
+	// todo: Redirect the incoming HTTP request. Note that "127.0.0.1:8081" will only work if you are accessing the server from your local machine.
+	http.Redirect(w, r, "https://127.0.0.1:8080"+r.RequestURI, http.StatusMovedPermanently)
+}
+
 func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Welcome\n")
 	for _, route := range app.Routes {

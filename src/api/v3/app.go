@@ -36,12 +36,11 @@ func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
 }
 
 func (app *App) Run(addr string) {
+
 	handler := handlers.CombinedLoggingHandler(os.Stdout, app.Router)
+	go http.ListenAndServeTLS(addr, "/Users/hk/Documents/code/go/certs/cert.pem", "/Users/hk/Documents/code/go/certs/key.pem", handler)
 
-	//app.Router.PathPrefix("/logs/").Handler(
-	//	http.StripPrefix("/logs/", http.FileServer(http.Dir("/"))))
+	// Redirect to https
+	http.ListenAndServe(":8081", http.HandlerFunc(redirectToHttps))
 
-	log.Fatal(http.ListenAndServeTLS(addr, "/Users/hk/Documents/code/go/certs/cert.pem", "/Users/hk/Documents/code/go/certs/key.pem", handler))
-
-	// log.Fatal(http.ListenAndServe(addr, handler))
 }
