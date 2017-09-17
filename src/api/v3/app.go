@@ -41,5 +41,7 @@ func (app *App) Run(addr string) {
 	//app.Router.PathPrefix("/logs/").Handler(
 	//	http.StripPrefix("/logs/", http.FileServer(http.Dir("/"))))
 
-	log.Fatal(http.ListenAndServe(addr, handler))
+	log.Fatal(http.ListenAndServeTLS(addr, "/Users/hk/Documents/code/go/certs/cert.pem", "/Users/hk/Documents/code/go/certs/key.pem", handler))
+
+	// log.Fatal(http.ListenAndServe(addr, handler))
 }

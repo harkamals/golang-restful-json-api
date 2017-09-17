@@ -31,7 +31,7 @@ func RepoFindTodo(id int) Todo {
 			return t
 		}
 	}
-	// return empty Todo if not found
+	// return empty To-do if not found
 	return Todo{}
 }
 

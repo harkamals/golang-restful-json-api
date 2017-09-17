@@ -4,8 +4,10 @@
 
 ```sh
 # Version 3
+  + TLS
   + Middleware for Logging
-  + Using GORM - in-progress
+  + Middleware for API Auth - WIP
+  + Using GORM - WIP
  
 # Version 2
   + Orders model
@@ -25,13 +27,18 @@
 go test ./v3 -v
 ```
 
+##### Generate Self-signed certs
+```sh
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem
+```
+
 ##### Start web server
 ```sh
 # Run example 
 go run ./v3/*.go
 ```
-##### REST Endpoints
 
+##### REST Endpoints
 ```sh
 # Database backend
 curl http://localhost:8080/orders
@@ -43,3 +50,4 @@ curl http://localhost:8080/todos
 curl http://localhost:8080/todos/1
 curl -H "Content-Type: application/json" -d '{"name":"New Todo"}'  http://localhost:8080/todos
 ```
+
