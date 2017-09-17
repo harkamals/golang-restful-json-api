@@ -60,7 +60,7 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := json.Unmarshal(body, &todo); err != nil {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(422) // unprocessable entity
+		w.WriteHeader(422) // un processable entity
 		if err := json.NewEncoder(w).Encode(err); err != nil {
 			panic(err)
 		}

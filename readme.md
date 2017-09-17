@@ -4,7 +4,7 @@
 
 ```sh
 # Version 3
-  + TLS
+  + TLS, http redirect
   + Middleware for Logging
   + Middleware for API Auth - WIP
   + Using GORM - WIP

@@ -35,7 +35,7 @@ func RepoFindTodo(id int) Todo {
 	return Todo{}
 }
 
-//this is bad, I don't think it passes race condtions
+//this is bad, I don't think it passes race conditions
 func RepoCreateTodo(t Todo) Todo {
 	currentId += 1
 	t.Id = currentId

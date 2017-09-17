@@ -14,7 +14,6 @@ import (
 
 func not_found_404(w http.ResponseWriter, r *http.Request) {
 	respondWithError(w, http.StatusNotFound, "not found")
-
 }
 
 func redirectToHttps(w http.ResponseWriter, r *http.Request) {
