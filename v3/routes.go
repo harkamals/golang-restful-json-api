@@ -54,7 +54,7 @@ func (app *App) initializeRoutes() {
 
 	// Logs
 	app.Router.PathPrefix("/logs/").Handler(
-		http.StripPrefix("/logs/", http.FileServer(http.Dir("/"))))
+		http.StripPrefix("/logs/", http.FileServer(http.Dir("."))))
 
 	// Enumerate routes
 	for _, route := range app.Routes {
@@ -63,6 +63,7 @@ func (app *App) initializeRoutes() {
 		handler = route.HandlerFunc
 
 		// handler = Logger(handler, route.Name)
+		handler = Authenticator(handler, route.Name)
 
 		app.Router.
 			Methods(route.Method).
