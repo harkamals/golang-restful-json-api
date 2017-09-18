@@ -1,6 +1,10 @@
 <application>
   <component name="BitbucketServerRegistry">
-    <instances />
-    <lookup />
+    <instances>
+      <instance uuid="af282682-0369-4401-8c7e-ab71c129b59f" baseUri="http://stash.uk.standardchartered.com:7990/projects/HC" />
+    </instances>
+    <lookup>
+      <record scheme="https" hostname="bitbucket.global.standardchartered.com" port="-1" path="/" uuid="af282682-0369-4401-8c7e-ab71c129b59f" />
+    </lookup>
   </component>
 </application>
