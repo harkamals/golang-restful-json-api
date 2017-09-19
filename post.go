@@ -42,13 +42,22 @@ func init() {
 func main() {
 	fmt.Println("Main: Post")
 
-	// Create Post
+	// Create post
 	post := Post{Content: "Hello World!", Author: "Sau Sheong"}
 	Db.Create(&post)
 	fmt.Println(post)
 
-	// Create Comment
-	comment := Comment{Content: "Good post", Author: "Joe"}
+	// Create comment
+	comment := Comment{Content: "Good post!", Author: "Joe"}
 	Db.Model(&post).Association("Comments").Append(comment)
+	fmt.Println(comment)
+
+	// Get comments from a post
+	var readPost Post
+	Db.Where("Id = $1", post.Id).First(&readPost)
+
+	var comments []Comment
+	Db.Model(&readPost).Related(&comments)
+	fmt.Println(comments)
 
 }
