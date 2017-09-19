@@ -1,10 +1,12 @@
 package main
 
-import "api/v3"
+import (
+	"api/latest"
+)
 
 func main() {
 
-	app := v3.App{}
+	app := latest.App{}
 	app.Initialize(
 		"postgres",
 		"postgres",

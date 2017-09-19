@@ -1,0 +1,11 @@
+
+
+[development]
+dbUser = "postgres"
+dbPass = "postgres"
+db = "postgres"
+
+[testing]
+dbUser = "postgres"
+dbPass = "postgres"
+db = "postgres_test"

@@ -5,7 +5,7 @@
 package main
 
 import (
-	"api/v3"
+	"api/latest"
 	"bytes"
 	"encoding/json"
 	"log"
@@ -17,7 +17,7 @@ import (
 	"testing"
 )
 
-var app v3.App
+var app latest.App
 
 const tableCreationQuery = `CREATE TABLE IF NOT EXISTS orders
 (
@@ -29,7 +29,7 @@ CONSTRAINT orders_pkey PRIMARY KEY (id)
 
 func TestMain(m *testing.M) {
 
-	app = v3.App{}
+	app = latest.App{}
 	app.Initialize(
 		"postgres",
 		"postgres",
