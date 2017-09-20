@@ -31,7 +31,7 @@ func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
 // ** POSTS **
 func (app *App) getPosts(w http.ResponseWriter, r *http.Request) {
 
-	posts, err := getPosts(app.DB)
+	posts, err := getPosts(app.Gorm)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -51,7 +51,7 @@ func (app *App) getPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	p := Post{Id: id}
-	if err := p.getPost(app.DB); err != nil {
+	if err := p.getPost(app.Gorm); err != nil {
 		return
 	}
 

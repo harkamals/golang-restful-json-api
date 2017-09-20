@@ -5,14 +5,18 @@ import (
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 	"log"
 	"net/http"
 	"os"
+	// "github.com/jinzhu/gorm/dialects/postgres"
+	// "github.com/lib/pq"
 )
 
 type App struct {
 	Router *mux.Router
 	DB     *sql.DB
+	Gorm   *gorm.DB
 	Routes []Route
 }
 
@@ -28,6 +32,16 @@ func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// GORM Database Provider
+	// var err error
+	app.Gorm, err = gorm.Open("postgres", connectionString)
+
+	if err != nil {
+		panic(err)
+	}
+
+	app.Gorm.AutoMigrate(&Post{}, &Comment{})
 
 	app.Router = mux.NewRouter().StrictSlash(true)
 	app.initializeRoutes()
