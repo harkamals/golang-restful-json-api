@@ -3,6 +3,7 @@ package latest
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"time"
 )
 
@@ -45,6 +46,8 @@ func main() {
 
 }
 
+// todo: add exception handling
+
 func getPosts(db *gorm.DB) ([]Post, error) {
 
 	var posts []Post
@@ -53,8 +56,18 @@ func getPosts(db *gorm.DB) ([]Post, error) {
 	return posts, nil
 }
 
-func (p *Post) getPost(db *gorm.DB) error {
-	db.First(&p, &p.Id)
+func (p *Post) createPost(db gorm.DB) {
+	db.Create(p)
+}
 
-	return nil // fix this
+func (p *Post) updatePost(db gorm.DB) {
+	db.Updates(&p).Where("Id", &p.Id)
+}
+
+func (p *Post) deletePost(db gorm.DB) {
+	db.Delete(p).Where("Id", &p.Id)
+}
+
+func (p *Post) getPost(db *gorm.DB) {
+	db.First(&p, &p.Id)
 }

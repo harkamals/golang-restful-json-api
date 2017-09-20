@@ -7,7 +7,7 @@
   + TLS, http redirect
   + Middleware for Logging
   + Middleware for API Auth - WIP
-  + Using GORM - WIP
+  + Using GORM for database models
  
 # Version 2
   + Orders model
@@ -24,7 +24,7 @@
 ##### Perform Tests
 ```sh
 # Run Tests
-go test ./v3 -v
+go test -v
 ```
 
 ##### Generate Self-signed certs
@@ -35,7 +35,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pe
 ##### Start web server
 ```sh
 # Run example 
-go run ./v3/*.go
+go run main.go
 ```
 
 ##### REST Endpoints

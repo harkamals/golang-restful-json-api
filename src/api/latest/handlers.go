@@ -51,9 +51,7 @@ func (app *App) getPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	p := Post{Id: id}
-	if err := p.getPost(app.Gorm); err != nil {
-		return
-	}
+	p.getPost(app.Gorm)
 
 	respondWithJSON(w, http.StatusOK, p)
 
