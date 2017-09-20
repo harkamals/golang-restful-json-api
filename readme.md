@@ -7,7 +7,7 @@
   + TLS, http redirect
   + Middleware for Logging
   + Middleware for API Auth - WIP
-  + Using GORM for database models
+  + GORM for database models
  
 # Version 2
   + Orders model
