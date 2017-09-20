@@ -24,7 +24,7 @@ func redirectToHttps(w http.ResponseWriter, r *http.Request) {
 func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Welcome\n")
 	for _, route := range app.Routes {
-		fmt.Fprint(w, route.Pattern, "\n")
+		fmt.Fprint(w, route.Method, "  ", route.Pattern, "\n")
 	}
 }
 
