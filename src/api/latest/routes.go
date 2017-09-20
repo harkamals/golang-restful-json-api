@@ -44,9 +44,12 @@ func (app *App) initializeRoutes() {
 		Route{
 			"Order", "DELETE", "/order/{id:[0-9]+}", app.deleteOrder,
 		},
-		//Route{
-		//	"Logs", "GET", "/logs", http.FileServer(http.Dir("/")),
-		//},
+		Route{
+			"Post", "GET", "/posts", app.getPosts,
+		},
+		Route{
+			"Post", "GET", "/post/{id:[0-9]+}", app.getPost,
+		},
 	}
 
 	// 404

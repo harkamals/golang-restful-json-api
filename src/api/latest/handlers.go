@@ -28,6 +28,47 @@ func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// ** POSTS **
+func (app *App) getPosts(w http.ResponseWriter, r *http.Request) {
+
+	posts, err := getPosts(app.DB)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, posts)
+
+}
+
+func (app *App) getPost(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "invalid post id")
+		return
+	}
+
+	p := Post{Id: id}
+	if err := p.getPost(app.DB); err != nil {
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, p)
+
+	//post, err := getPost(app.DB)
+	//
+	//if err != nil {
+	//	respondWithError(w, http.StatusInternalServerError, err.Error())
+	//	return
+	//}
+	//
+	//respondWithJSON(w, http.StatusOK, post)
+
+}
+
+// ** Orders **
 func (app *App) getOrders(w http.ResponseWriter, r *http.Request) {
 
 	count, _ := strconv.Atoi(r.FormValue("count"))

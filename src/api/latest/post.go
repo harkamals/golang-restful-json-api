@@ -1,10 +1,13 @@
-package main
+package latest
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/jinzhu/gorm"
-	_ "github.com/lib/pq"
 	"time"
+
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/lib/pq"
 )
 
 type Post struct {
@@ -59,5 +62,20 @@ func main() {
 	var comments []Comment
 	Db.Model(&readPost).Related(&comments)
 	fmt.Println(comments)
+
+}
+
+func getPosts(db *sql.DB) ([]Post, error) {
+
+	var posts []Post
+	Db.Find(&posts)
+
+	return posts, nil
+}
+
+func (p *Post) getPost(db *sql.DB) error {
+	Db.First(&p, &p.Id)
+
+	return nil // fix this
 
 }
