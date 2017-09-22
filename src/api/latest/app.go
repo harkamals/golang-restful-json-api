@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/lib/pq"
+	"log"
 	"net/http"
 	"os"
 )
@@ -27,7 +28,7 @@ func (app *App) InitDB(dbHost, dbPort, dbUser, dbPass, db string) {
 	app.Db, err = gorm.Open("postgres", connectionString)
 
 	if err != nil {
-		panic(err)
+		log.Fatalf("could not connect to the database: %v", err)
 	}
 
 	app.Db.LogMode(true)
