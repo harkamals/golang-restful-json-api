@@ -7,7 +7,7 @@ import (
 func main() {
 
 	app := latest.App{}
-	app.InitDb(
+	app.InitDB(
 		"localhost",
 		"5409",
 		"postgres",

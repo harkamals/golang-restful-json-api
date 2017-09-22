@@ -17,7 +17,7 @@ type App struct {
 	Routes []Route
 }
 
-func (app *App) InitDb(dbHost, dbPort, dbUser, dbPass, db string) {
+func (app *App) InitDB(dbHost, dbPort, dbUser, dbPass, db string) {
 
 	fmt.Println("Init Db..")
 
