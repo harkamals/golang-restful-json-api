@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
+	"os"
 )
 
 type Route struct {
@@ -70,8 +71,9 @@ func (app *App) InitRoutes() *mux.Router {
 	app.Router.NotFoundHandler = http.HandlerFunc(not_found_404)
 
 	// Logs
+	os.Mkdir("./logs", os.FileMode(755))
 	app.Router.PathPrefix("/logs/").Handler(
-		http.StripPrefix("/logs/", http.FileServer(http.Dir("."))))
+		http.StripPrefix("/logs/", http.FileServer(http.Dir("./logs"))))
 
 	// Enumerate routes
 	for _, route := range app.Routes {

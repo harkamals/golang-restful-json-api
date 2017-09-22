@@ -14,7 +14,8 @@ import (
 func Authenticator(inner http.Handler, name string) http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
-			// println("Authenticator calling")
+			println("Authenticator calling")
+
 			if 1 == 1 {
 				inner.ServeHTTP(w, r)
 			} else {
