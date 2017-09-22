@@ -7,13 +7,14 @@ import (
 func main() {
 
 	app := latest.App{}
-	app.Initialize(
+	app.InitDb(
 		"localhost",
 		"5409",
 		"postgres",
 		"postgres",
 		"postgres")
 
+	app.InitRoutes()
 	app.Run(":8443")
 
 }

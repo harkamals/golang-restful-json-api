@@ -18,11 +18,10 @@ type App struct {
 	Post   Post
 }
 
-func (app *App) Initialize(dbHost, dbPort, dbUser, dbPass, db string) *mux.Router {
+func (app *App) InitDb(dbHost, dbPort, dbUser, dbPass, db string) {
 
-	fmt.Println("Initializing..")
+	fmt.Println("Init Db..")
 
-	// Init DB
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPass, db)
 
 	var err error
@@ -35,15 +34,11 @@ func (app *App) Initialize(dbHost, dbPort, dbUser, dbPass, db string) *mux.Route
 	app.Gorm.LogMode(true)
 	app.Gorm.AutoMigrate(&Post{}, &Comment{})
 
-	app.Router = mux.NewRouter().StrictSlash(true)
-	app.initializeRoutes()
-
-	fmt.Println("Running..")
-
-	return app.Router
 }
 
 func (app *App) Run(addr string) {
+
+	fmt.Println("Running..")
 
 	defer app.Gorm.Close()
 

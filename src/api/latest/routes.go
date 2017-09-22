@@ -1,6 +1,8 @@
 package latest
 
 import (
+	"fmt"
+	"github.com/gorilla/mux"
 	"net/http"
 )
 
@@ -13,7 +15,12 @@ type Route struct {
 
 type Routes []Route
 
-func (app *App) initializeRoutes() {
+func (app *App) InitRoutes() *mux.Router {
+
+	fmt.Println("Init Router..")
+
+	// Router
+	app.Router = mux.NewRouter().StrictSlash(true)
 
 	// Define routes
 	app.Routes = Routes{
@@ -81,5 +88,7 @@ func (app *App) initializeRoutes() {
 			Name(route.Name).
 			Handler(handler)
 	}
+
+	return app.Router
 
 }
