@@ -8,29 +8,21 @@ import (
 	"api/latest"
 	"bytes"
 	"encoding/json"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"strconv"
 	"strings"
 	"testing"
 )
 
 var app latest.App
 
-const tableCreationQuery = `CREATE TABLE IF NOT EXISTS orders
-(
-id SERIAL,
-NAME TEXT NOT NULL,
-price NUMERIC (10, 2) NOT NULL DEFAULT 0.00,
-CONSTRAINT orders_pkey PRIMARY KEY (id)
-)`
-
 func TestMain(m *testing.M) {
 
 	app = latest.App{}
 	app.Initialize(
+		"localhost",
+		"5409",
 		"postgres",
 		"postgres",
 		"postgres_test")
@@ -43,14 +35,11 @@ func TestMain(m *testing.M) {
 }
 
 func ensureTableExists() {
-	if _, err := app.DB.Exec(tableCreationQuery); err != nil {
-		log.Fatal(err)
-	}
+	app.Gorm.Create(app.Post)
 }
 
 func clearTable() {
-	app.DB.Exec("DELETE FROM orders")
-	app.DB.Exec("ALTER SEQUENCE orders_id_seq RESTART WITH 1")
+	app.Gorm.Delete(app.Post)
 }
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
@@ -74,11 +63,11 @@ func Test_GetTodos(t *testing.T) {
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
 
-// Model: Order
+// Model: POST
 func Test_EmptyTable(t *testing.T) {
 	clearTable()
 
-	req, _ := http.NewRequest("GET", "/orders", nil)
+	req, _ := http.NewRequest("GET", "/posts", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
@@ -91,7 +80,7 @@ func Test_EmptyTable(t *testing.T) {
 func Test_GetNonExistentProduct(t *testing.T) {
 	clearTable()
 
-	req, _ := http.NewRequest("GET", "/order/999", nil)
+	req, _ := http.NewRequest("GET", "/post/999", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusNotFound, response.Code)
@@ -104,18 +93,18 @@ func Test_GetNonExistentProduct(t *testing.T) {
 	}
 }
 
-func Test_GetOrders(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/orders", nil)
+func Test_GetPosts(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/posts", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
 
-func Test_GetOrder(t *testing.T) {
+func Test_GetPost(t *testing.T) {
 	clearTable()
 	addProducts(1)
 
-	req, _ := http.NewRequest("GET", "/order/1", nil)
+	req, _ := http.NewRequest("GET", "/post/1", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
@@ -127,7 +116,7 @@ func addProducts(count int) {
 	}
 
 	for i := 0; i < count; i++ {
-		app.DB.Exec("INSERT INTO orders(name, price) VALUES($1, $2)", "Order "+strconv.Itoa(i), (i+1.0)*10)
+		// app.DB.Exec("INSERT INTO orders(name, price) VALUES($1, $2)", "Order "+strconv.Itoa(i), (i+1.0)*10)
 	}
 }
 
@@ -190,19 +179,20 @@ func Test_UpdateOrder(t *testing.T) {
 	}
 }
 
-func Test_DeleteOrder(t *testing.T) {
+func Test_DeletePost(t *testing.T) {
+
 	clearTable()
 	addProducts(1)
 
-	req, _ := http.NewRequest("GET", "/order/1", nil)
+	req, _ := http.NewRequest("GET", "/post/1", nil)
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusOK, response.Code)
 
-	req, _ = http.NewRequest("DELETE", "/order/1", nil)
+	req, _ = http.NewRequest("DELETE", "/post/1", nil)
 	response = executeRequest(req)
 	checkResponseCode(t, http.StatusOK, response.Code)
 
-	req, _ = http.NewRequest("GET", "/order/1", nil)
+	req, _ = http.NewRequest("GET", "/post/1", nil)
 	response = executeRequest(req)
 	checkResponseCode(t, http.StatusNotFound, response.Code)
 

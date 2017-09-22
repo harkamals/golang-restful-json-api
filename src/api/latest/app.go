@@ -1,60 +1,56 @@
 package latest
 
 import (
-	"database/sql"
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
-	"log"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/lib/pq"
 	"net/http"
 	"os"
-	// "github.com/jinzhu/gorm/dialects/postgres"
-	// "github.com/lib/pq"
 )
 
 type App struct {
 	Router *mux.Router
-	DB     *sql.DB
 	Gorm   *gorm.DB
 	Routes []Route
+	Post   Post
 }
 
-func (app *App) Initialize(dbUser, dbPass, db string) *mux.Router {
+func (app *App) Initialize(dbHost, dbPort, dbUser, dbPass, db string) *mux.Router {
 
-	fmt.Println("App is initializing..")
+	fmt.Println("Initializing..")
 
-	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", dbUser, dbPass, db)
+	// Init DB
+	connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPass, db)
 
 	var err error
-	app.DB, err = sql.Open("postgres", connectionString)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// GORM Database Provider
-	// var err error
 	app.Gorm, err = gorm.Open("postgres", connectionString)
 
 	if err != nil {
 		panic(err)
 	}
 
+	app.Gorm.LogMode(true)
 	app.Gorm.AutoMigrate(&Post{}, &Comment{})
 
 	app.Router = mux.NewRouter().StrictSlash(true)
 	app.initializeRoutes()
+
+	fmt.Println("Running..")
 
 	return app.Router
 }
 
 func (app *App) Run(addr string) {
 
+	defer app.Gorm.Close()
+
 	handler := handlers.CombinedLoggingHandler(os.Stdout, app.Router)
 	go http.ListenAndServeTLS(addr, "/Users/hk/Documents/code/go/certs/cert.pem", "/Users/hk/Documents/code/go/certs/key.pem", handler)
 
 	// Redirect to https
-	http.ListenAndServe(":8081", http.HandlerFunc(redirectToHttps))
+	http.ListenAndServe(":8080", http.HandlerFunc(redirectToHttps))
 
 }

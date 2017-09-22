@@ -17,7 +17,7 @@ func not_found_404(w http.ResponseWriter, r *http.Request) {
 
 func redirectToHttps(w http.ResponseWriter, r *http.Request) {
 	// todo: read from configuration
-	http.Redirect(w, r, "https://127.0.0.1:8080"+r.RequestURI, http.StatusMovedPermanently)
+	http.Redirect(w, r, "https://127.0.0.1:8443"+r.RequestURI, http.StatusMovedPermanently)
 }
 
 func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
@@ -58,67 +58,45 @@ func (app *App) getPost(w http.ResponseWriter, r *http.Request) {
 
 func (app *App) createPost(w http.ResponseWriter, r *http.Request) {
 
-}
-
-func (app *App) updatePost(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (app *App) deletePost(w http.ResponseWriter, r *http.Request) {
-
-}
-
-// ** Orders **
-
-func (app *App) createOrder(w http.ResponseWriter, r *http.Request) {
-
-	var o Order
+	var p Post
 	decoder := json.NewDecoder(r.Body)
 
-	if err := decoder.Decode(&o); err != nil {
+	if err := decoder.Decode(&p); err != nil {
 		respondWithError(w, http.StatusBadRequest, "invalid request payload")
 		return
 	}
 	defer r.Body.Close()
 
-	if err := o.createOrder(app.DB); err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	respondWithJSON(w, http.StatusCreated, o)
+	p.createPost(app.Gorm)
+	respondWithJSON(w, http.StatusCreated, p)
 
 }
 
-func (app *App) updateOrder(w http.ResponseWriter, r *http.Request) {
+func (app *App) updatePost(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
+
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, "invalid order id")
 		return
 	}
 
-	var o Order
+	var p Post
 	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&o); err != nil {
+	if err := decoder.Decode(&p); err != nil {
 		respondWithError(w, http.StatusBadRequest, "invalid request payload")
 		return
 	}
 
 	defer r.Body.Close()
-	o.Id = id
+	p.Id = id
 
-	if err := o.updateOrder(app.DB); err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	respondWithJSON(w, http.StatusOK, o)
-
+	p.updatePost(app.Gorm)
+	respondWithJSON(w, http.StatusOK, p)
 }
 
-func (app *App) deleteOrder(w http.ResponseWriter, r *http.Request) {
+func (app *App) deletePost(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -128,17 +106,14 @@ func (app *App) deleteOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	o := Order{Id: id}
-	if err := o.deleteOrder(app.DB); err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
+	p := Post{Id: id}
+	p.deletePost(app.Gorm)
 
 	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 
 }
 
-// TODOS app
+// ** TODOS app **
 func todo_list(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, todos)
 }
