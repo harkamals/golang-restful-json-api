@@ -13,9 +13,8 @@ import (
 
 type App struct {
 	Router *mux.Router
-	Gorm   *gorm.DB
+	Db     *gorm.DB
 	Routes []Route
-	Post   Post
 }
 
 func (app *App) InitDb(dbHost, dbPort, dbUser, dbPass, db string) {
@@ -25,14 +24,14 @@ func (app *App) InitDb(dbHost, dbPort, dbUser, dbPass, db string) {
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPass, db)
 
 	var err error
-	app.Gorm, err = gorm.Open("postgres", connectionString)
+	app.Db, err = gorm.Open("postgres", connectionString)
 
 	if err != nil {
 		panic(err)
 	}
 
-	app.Gorm.LogMode(true)
-	app.Gorm.AutoMigrate(&Post{}, &Comment{})
+	app.Db.LogMode(true)
+	app.Db.AutoMigrate(&Post{}, &Comment{})
 
 }
 
@@ -40,7 +39,7 @@ func (app *App) Run(addr string) {
 
 	fmt.Println("Running..")
 
-	defer app.Gorm.Close()
+	defer app.Db.Close()
 
 	handler := handlers.CombinedLoggingHandler(os.Stdout, app.Router)
 	go http.ListenAndServeTLS(addr, "/Users/hk/Documents/code/go/certs/cert.pem", "/Users/hk/Documents/code/go/certs/key.pem", handler)

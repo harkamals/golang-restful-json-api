@@ -35,11 +35,11 @@ func TestMain(m *testing.M) {
 }
 
 func ensureTableExists() {
-	app.Gorm.Create(app.Post)
+	app.Db.Create(app.Post)
 }
 
 func clearTable() {
-	app.Gorm.Delete(app.Post)
+	app.Db.Delete(app.Post)
 }
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {

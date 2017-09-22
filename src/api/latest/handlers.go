@@ -30,7 +30,7 @@ func (app *App) TOC(w http.ResponseWriter, r *http.Request) {
 // ** POSTS **
 func (app *App) getPosts(w http.ResponseWriter, r *http.Request) {
 
-	posts, err := getPosts(app.Gorm)
+	posts, err := getPosts(app.Db)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -50,7 +50,7 @@ func (app *App) getPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	p := Post{Id: id}
-	p.getPost(app.Gorm)
+	p.getPost(app.Db)
 
 	respondWithJSON(w, http.StatusOK, p)
 
@@ -67,7 +67,7 @@ func (app *App) createPost(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	p.createPost(app.Gorm)
+	p.createPost(app.Db)
 	respondWithJSON(w, http.StatusCreated, p)
 
 }
@@ -92,7 +92,7 @@ func (app *App) updatePost(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	p.Id = id
 
-	p.updatePost(app.Gorm)
+	p.updatePost(app.Db)
 	respondWithJSON(w, http.StatusOK, p)
 }
 
@@ -107,7 +107,7 @@ func (app *App) deletePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	p := Post{Id: id}
-	p.deletePost(app.Gorm)
+	p.deletePost(app.Db)
 
 	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 
