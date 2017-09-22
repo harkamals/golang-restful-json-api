@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"database/sql"
 	"fmt"
 	"github.com/gorilla/mux"
 )
@@ -55,64 +54,21 @@ func (app *App) getPost(w http.ResponseWriter, r *http.Request) {
 
 	respondWithJSON(w, http.StatusOK, p)
 
-	//post, err := getPost(app.DB)
-	//
-	//if err != nil {
-	//	respondWithError(w, http.StatusInternalServerError, err.Error())
-	//	return
-	//}
-	//
-	//respondWithJSON(w, http.StatusOK, post)
+}
+
+func (app *App) createPost(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (app *App) updatePost(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (app *App) deletePost(w http.ResponseWriter, r *http.Request) {
 
 }
 
 // ** Orders **
-func (app *App) getOrders(w http.ResponseWriter, r *http.Request) {
-
-	count, _ := strconv.Atoi(r.FormValue("count"))
-	start, _ := strconv.Atoi(r.FormValue("start"))
-
-	if count > 10 || count < 1 {
-		count = 10
-	}
-
-	if start < 0 {
-		start = 0
-	}
-
-	orders, err := getOrders(app.DB, start, count)
-	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	respondWithJSON(w, http.StatusOK, orders)
-
-}
-
-func (app *App) getOrder(w http.ResponseWriter, r *http.Request) {
-
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "invalid order id")
-		return
-	}
-
-	o := Order{Id: id}
-
-	if err := o.getOrder(app.DB); err != nil {
-		switch err {
-		case sql.ErrNoRows:
-			respondWithError(w, http.StatusNotFound, "order not found")
-		default:
-			respondWithError(w, http.StatusInternalServerError, err.Error())
-		}
-		return
-	}
-	respondWithJSON(w, http.StatusOK, o)
-
-}
 
 func (app *App) createOrder(w http.ResponseWriter, r *http.Request) {
 

@@ -47,6 +47,9 @@ func main() {
 }
 
 // todo: add exception handling
+func (p *Post) createPost(db *gorm.DB) {
+	db.Create(p)
+}
 
 func getPosts(db *gorm.DB) ([]Post, error) {
 
@@ -56,18 +59,14 @@ func getPosts(db *gorm.DB) ([]Post, error) {
 	return posts, nil
 }
 
-func (p *Post) createPost(db gorm.DB) {
-	db.Create(p)
-}
-
-func (p *Post) updatePost(db gorm.DB) {
-	db.Updates(&p).Where("Id", &p.Id)
-}
-
-func (p *Post) deletePost(db gorm.DB) {
-	db.Delete(p).Where("Id", &p.Id)
-}
-
 func (p *Post) getPost(db *gorm.DB) {
 	db.First(&p, &p.Id)
+}
+
+func (p *Post) updatePost(db *gorm.DB) {
+	db.Save(&p).Where("Id", &p.Id)
+}
+
+func (p *Post) deletePost(db *gorm.DB) {
+	db.Delete(p).Where("Id", &p.Id)
 }

@@ -17,39 +17,46 @@ func (app *App) initializeRoutes() {
 
 	// Define routes
 	app.Routes = Routes{
+
 		Route{
-			"Index", "GET", "/", app.TOC,
-		},
+			"table-of-contents",
+			"GET",
+			"/",
+			app.TOC},
+
 		Route{
-			"TodoIndex", "GET", "/todos", todo_list,
-		},
+			"post-new",
+			"POST",
+			"/post",
+			app.createPost},
+
 		Route{
-			"TodoCreate", "POST", "/todos", TodoCreate,
-		},
+			"post-get",
+			"GET",
+			"/post/{id:[0-9]+}",
+			app.getPost},
+
 		Route{
-			"TodoShow", "GET", "/todos/{todoId}", TodoShow,
-		},
+			"post-get-all",
+			"GET",
+			"/posts",
+			app.getPosts},
+
 		Route{
-			"Orders", "GET", "/orders", app.getOrders,
-		},
+			"post-update",
+			"PUT",
+			"/post/{id:[0-9]+}",
+			app.updatePost},
+
 		Route{
-			"Order", "POST", "/order", app.createOrder,
-		},
-		Route{
-			"Order", "GET", "/order/{id:[0-9]+}", app.getOrder,
-		},
-		Route{
-			"Order", "PUT", "/order/{id:[0-9]+}", app.updateOrder,
-		},
-		Route{
-			"Order", "DELETE", "/order/{id:[0-9]+}", app.deleteOrder,
-		},
-		Route{
-			"Post", "GET", "/posts", app.getPosts,
-		},
-		Route{
-			"Post", "GET", "/post/{id:[0-9]+}", app.getPost,
-		},
+			"post-delete",
+			"DELETE",
+			"/post/{id:[0-9]+}",
+			app.deletePost},
+
+		Route{"todo-new", "POST", "/todos", TodoCreate},
+		Route{"todo-get-all", "GET", "/todos", todo_list},
+		Route{"todo-get", "GET", "/todos/{todoId}", TodoShow},
 	}
 
 	// 404
