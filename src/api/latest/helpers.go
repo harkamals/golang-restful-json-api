@@ -7,13 +7,13 @@ import (
 
 // Settings: Config.json
 type config struct {
-	Host       string   `json:"host"`
-	Http_port  int      `json:"http_port"`
-	Https_port int      `json:"https_port"`
-	Cert       string   `json:"cert"`
-	Key        string   `json:"key"`
-	Db         dbconfig `json:"default"`
-	Db_test    dbconfig `json:"test"`
+	Host    string   `json:"host"`
+	Http    string   `json:"http_port"`
+	Https   string   `json:"https_port"`
+	Cert    string   `json:"cert"`
+	Key     string   `json:"key"`
+	Db      dbconfig `json:"default"`
+	Db_test dbconfig `json:"test"`
 }
 
 type dbconfig struct {
