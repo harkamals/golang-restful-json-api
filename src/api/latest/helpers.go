@@ -5,6 +5,25 @@ import (
 	"net/http"
 )
 
+// Settings: Config.json
+type config struct {
+	Host       string   `json:"host"`
+	Http_port  int      `json:"http_port"`
+	Https_port int      `json:"https_port"`
+	Cert       string   `json:"cert"`
+	Key        string   `json:"key"`
+	Db         dbconfig `json:"default"`
+	Db_test    dbconfig `json:"test"`
+}
+
+type dbconfig struct {
+	Host string `json:"dbhost"`
+	Port int    `json:"dbport"`
+	User string `json:"dbuser"`
+	Pass string `json:"dbpass"`
+	Name string `json:"dbname"`
+}
+
 type jsonErr struct {
 	Code int    `json:"code"`
 	Text string `json:"text"`

@@ -1,0 +1,21 @@
+{
+  "host": "localhost",
+  "http_port": 8080,
+  "https_port": 8443,
+  "cert": "/Users/hk/Documents/code/go/certs/cert.pem",
+  "key": "/Users/hk/Documents/code/go/certs/key.pem",
+  "test": {
+    "dbhost": "localhost",
+    "dbport": 5409,
+    "dbuser": "postgres",
+    "dbpass": "postgres",
+    "dbname": "postgres_test"
+  },
+  "default": {
+    "dbhost": "localhost",
+    "dbport": 5409,
+    "dbuser": "postgres",
+    "dbpass": "postgres",
+    "dbname": "postgres"
+  }
+}
