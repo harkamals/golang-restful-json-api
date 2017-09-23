@@ -15,9 +15,8 @@ func not_found_404(w http.ResponseWriter, r *http.Request) {
 	respondWithError(w, http.StatusNotFound, "not found")
 }
 
-func redirectToHttps(w http.ResponseWriter, r *http.Request) {
-	// todo: read from configuration
-	http.Redirect(w, r, "https://127.0.0.1:8443"+r.RequestURI, http.StatusMovedPermanently)
+func (app *App) redirectToHttps(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "https://"+app.Config.Host+app.Config.Https+r.RequestURI, http.StatusMovedPermanently)
 }
 
 func (app *App) TOC(w http.ResponseWriter, r *http.Request) {

@@ -54,6 +54,6 @@ func (app *App) Run() {
 	go http.ListenAndServeTLS(app.Config.Https, "/Users/hk/Documents/code/go/certs/cert.pem", "/Users/hk/Documents/code/go/certs/key.pem", handler)
 
 	// Redirect to https
-	http.ListenAndServe(app.Config.Http, http.HandlerFunc(redirectToHttps))
+	http.ListenAndServe(app.Config.Http, http.HandlerFunc(app.redirectToHttps))
 
 }
