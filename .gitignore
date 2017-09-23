@@ -20,4 +20,4 @@
 .DS_Store
 bin/
 logs/
-pkg
+pkg/darwin_amd64

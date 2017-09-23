@@ -51,7 +51,7 @@ func (app *App) Run() {
 	defer app.Db.Close()
 
 	handler := handlers.CombinedLoggingHandler(os.Stdout, app.Router)
-	go http.ListenAndServeTLS(app.Config.Https, "/Users/hk/Documents/code/go/certs/cert.pem", "/Users/hk/Documents/code/go/certs/key.pem", handler)
+	go http.ListenAndServeTLS(app.Config.Https, app.Config.Cert, app.Config.Key, handler)
 
 	// Redirect to https
 	http.ListenAndServe(app.Config.Http, http.HandlerFunc(app.redirectToHttps))
