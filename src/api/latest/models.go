@@ -108,7 +108,7 @@ func get_accounts(db *gorm.DB) (account []Accounts, rowCount int64) {
 }
 
 func (account *Accounts) get(db *gorm.DB) (RecordNotFound bool) {
-	return db.First(&account, &account.ID).RecordNotFound()
+	return db.Unscoped().First(&account, &account.ID).RecordNotFound()
 }
 
 //func (a *Accounts) update(db *gorm.DB) {
