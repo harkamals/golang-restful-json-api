@@ -2,7 +2,6 @@ package latest
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"net/http"
@@ -38,7 +37,7 @@ type Images struct {
 	Description string `gorm:"not null"`
 }
 
-// ** ACCOUNTS ** HANDLERS
+// ** ACCOUNTS ** WEB HANDLERS
 
 func (app *App) get_accounts(w http.ResponseWriter, r *http.Request) {
 
@@ -94,7 +93,8 @@ func (app *App) create_account(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// ** Accounts ** Database Handlers
+// ** ACCOUNTS ** DATABASE HANDLERS
+
 func (account *Accounts) create(db *gorm.DB) (err error) {
 	return db.Create(&account).Error
 }
