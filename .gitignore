@@ -20,4 +20,3 @@ pkg/darwin_amd64/golang.org/x/tools/blog.a
 pkg/darwin_amd64/golang.org/x/tools/blog/
 pkg/darwin_amd64/golang.org/x/tools/present.a
 /pkg/darwin_amd64/api/latest.a
-/pkg/darwin_amd64/api/v3.a
