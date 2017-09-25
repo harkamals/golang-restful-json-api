@@ -32,27 +32,38 @@ func (app *App) InitRoutes() *mux.Router {
 			"/",
 			app.TOC},
 
+		// ** ORDERS
 		Route{
 			"order-new",
 			"POST",
 			"/order",
 			app.create_order},
+
 		Route{
 			"order-get",
 			"GET",
 			"/order/{id:[0-9]+}",
 			app.get_order},
+
 		Route{
 			"order-get-all",
 			"GET",
 			"/orders",
 			app.get_orders},
+
+		Route{
+			"order-update-status",
+			"PUT",
+			"/order",
+			app.update_order},
+
 		Route{
 			"order-delete",
 			"DELETE",
 			"/order",
 			app.delete_order},
 
+		// ** ACCOUNTS
 		Route{
 			"account-new",
 			"POST",
@@ -71,6 +82,7 @@ func (app *App) InitRoutes() *mux.Router {
 			"/accounts",
 			app.get_accounts},
 
+		// ** POSTS
 		Route{
 			"post-new",
 			"POST",
@@ -101,6 +113,7 @@ func (app *App) InitRoutes() *mux.Router {
 			"/post/{id:[0-9]+}",
 			app.deletePost},
 
+		// TO-DO
 		Route{"todo-new", "POST", "/todos", TodoCreate},
 		Route{"todo-get-all", "GET", "/todos", todo_list},
 		Route{"todo-get", "GET", "/todos/{todoId}", TodoShow},
