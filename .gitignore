@@ -13,11 +13,7 @@
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
 .idea
-.idea/golang-restful-json-api.iml
-.idea/inspectionProfiles/
-.idea/modules.xml
-.idea/workspace.xml
 .DS_Store
 bin/
 logs/
-pkg/darwin_amd64
+pkg/
