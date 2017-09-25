@@ -25,7 +25,7 @@ func (app *App) InitDB() {
 
 	fmt.Println("Init Db..")
 
-	// Read config.json
+	// Load settings
 	data, _ := ioutil.ReadFile("config.json")
 	json.Unmarshal(data, &app.Config)
 
@@ -40,11 +40,13 @@ func (app *App) InitDB() {
 	}
 
 	app.Db.LogMode(true)
+
 	app.Db.AutoMigrate(
 		&Post{},
 		&Comment{},
 		&Orders{},
-		&Accounts{})
+		&Accounts{},
+		&Images{})
 
 }
 

@@ -33,6 +33,24 @@ func (app *App) InitRoutes() *mux.Router {
 			app.TOC},
 
 		Route{
+			"account-new",
+			"POST",
+			"/account",
+			app.create_account},
+
+		Route{
+			"account-get",
+			"GET",
+			"/account/{id:[0-9]+}",
+			app.get_account},
+
+		Route{
+			"account-get-all",
+			"GET",
+			"/accounts",
+			app.get_accounts},
+
+		Route{
 			"post-new",
 			"POST",
 			"/post",

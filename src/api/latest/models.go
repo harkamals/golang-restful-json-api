@@ -1,7 +1,11 @@
 package latest
 
 import (
+	"encoding/json"
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	"net/http"
+	"strconv"
 )
 
 type Orders struct {
@@ -12,7 +16,7 @@ type Orders struct {
 	Owner       string `gorm:"not null"`
 	Service     string `gorm:"not null"` // aws_account,aws_ami, aws_j5
 	Tier        string // Tier: 1,2,3
-	Status      string
+	Status      string `sql:"DEFAULT:'submitted'"`
 	Tracking    string
 	Account     Accounts
 	Image       Images
@@ -32,3 +36,83 @@ type Images struct {
 	Reference   string `gorm:"not null;unique"`
 	Description string `gorm:"not null"`
 }
+
+// ** ACCOUNTS ** HANDLERS
+
+func (app *App) get_accounts(w http.ResponseWriter, r *http.Request) {
+
+	accounts, rowCount := get_accounts(app.Db)
+
+	println(">>>", rowCount)
+
+	if rowCount == 0 {
+		respondWithError(w, 404, "record not found")
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, accounts)
+
+}
+
+func (app *App) get_account(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "invalid id")
+		return
+	}
+
+	account := Accounts{Model: gorm.Model{ID: uint(id)}}
+
+	if RecordNotFound := account.get(app.Db); RecordNotFound {
+		respondWithError(w, 404, "record not found")
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, account)
+
+}
+
+func (app *App) create_account(w http.ResponseWriter, r *http.Request) {
+
+	var account Accounts
+	decoder := json.NewDecoder(r.Body)
+
+	if err := decoder.Decode(&account); err != nil {
+		respondWithError(w, http.StatusBadRequest, "invalid request payload")
+		return
+	}
+	defer r.Body.Close()
+
+	account.create(app.Db)
+
+	respondWithJSON(w, http.StatusCreated, account)
+
+}
+
+// ** Accounts ** Database Handlers
+func (account *Accounts) create(db *gorm.DB) {
+	db.Create(&account)
+}
+
+func get_accounts(db *gorm.DB) (account []Accounts, rowCount int64) {
+
+	var accounts []Accounts
+	rowCount = db.Find(&accounts).RowsAffected
+
+	return accounts, rowCount
+}
+
+func (account *Accounts) get(db *gorm.DB) (RecordNotFound bool) {
+	return db.First(&account, &account.ID).RecordNotFound()
+}
+
+//func (a *Accounts) update(db *gorm.DB) {
+//	db.Save(&a).Where("Id", &a.Id)
+//}
+//
+//func (a *Accounts) del(db *gorm.DB) {
+//	db.Delete(a).Where("Id", &a.Id)
+//}
