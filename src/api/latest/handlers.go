@@ -64,6 +64,7 @@ func (app *App) createPost(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusBadRequest, "invalid request payload")
 		return
 	}
+
 	defer r.Body.Close()
 
 	p.createPost(app.Db)

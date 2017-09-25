@@ -2,6 +2,7 @@ package latest
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"net/http"
@@ -42,8 +43,6 @@ type Images struct {
 func (app *App) get_accounts(w http.ResponseWriter, r *http.Request) {
 
 	accounts, rowCount := get_accounts(app.Db)
-
-	println(">>>", rowCount)
 
 	if rowCount == 0 {
 		respondWithError(w, 404, "record not found")
@@ -86,15 +85,18 @@ func (app *App) create_account(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	account.create(app.Db)
+	if err := account.create(app.Db); err != nil {
+		respondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	respondWithJSON(w, http.StatusCreated, account)
 
 }
 
 // ** Accounts ** Database Handlers
-func (account *Accounts) create(db *gorm.DB) {
-	db.Create(&account)
+func (account *Accounts) create(db *gorm.DB) (err error) {
+	return db.Create(&account).Error
 }
 
 func get_accounts(db *gorm.DB) (account []Accounts, rowCount int64) {
