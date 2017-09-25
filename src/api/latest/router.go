@@ -33,6 +33,27 @@ func (app *App) InitRoutes() *mux.Router {
 			app.TOC},
 
 		Route{
+			"order-new",
+			"POST",
+			"/order",
+			app.create_order},
+		Route{
+			"order-get",
+			"GET",
+			"/order/{id:[0-9]+}",
+			app.get_order},
+		Route{
+			"order-get-all",
+			"GET",
+			"/orders",
+			app.get_orders},
+		Route{
+			"order-delete",
+			"DELETE",
+			"/order",
+			app.delete_order},
+
+		Route{
 			"account-new",
 			"POST",
 			"/account",
