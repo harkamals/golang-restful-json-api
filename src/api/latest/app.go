@@ -41,12 +41,8 @@ func (app *App) InitDB() {
 
 	app.Db.LogMode(true)
 
-	app.Db.AutoMigrate(
-		&Post{},
-		&Comment{},
-		&Orders{},
-		&Accounts{},
-		&Images{})
+	app.Db.AutoMigrate(&Post{}, &Comment{})
+	app.Db.AutoMigrate(&Orders{}, &Accounts{}, &Images{})
 
 }
 

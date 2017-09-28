@@ -52,7 +52,7 @@ func (app *App) InitRoutes() *mux.Router {
 			app.get_orders},
 
 		Route{
-			"order-update-status",
+			"order-status-update",
 			"PUT",
 			"/order",
 			app.update_order},
@@ -81,6 +81,12 @@ func (app *App) InitRoutes() *mux.Router {
 			"GET",
 			"/accounts",
 			app.get_accounts},
+
+		Route{
+			"account-get-email",
+			"GET",
+			"/email",
+			app.get_next_email},
 
 		// ** POSTS
 		Route{

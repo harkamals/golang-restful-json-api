@@ -37,6 +37,24 @@ type Images struct {
 	Description string `gorm:"not null"`
 }
 
+// ** ORDERS **
+func (app *App) get_orders(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (app *App) get_order(w http.ResponseWriter, r *http.Request) {
+
+}
+func (app *App) create_order(w http.ResponseWriter, r *http.Request) {
+
+}
+func (app *App) update_order(w http.ResponseWriter, r *http.Request) {
+
+}
+func (app *App) delete_order(w http.ResponseWriter, r *http.Request) {
+
+}
+
 // ** ACCOUNTS ** WEB HANDLERS
 
 func (app *App) get_accounts(w http.ResponseWriter, r *http.Request) {
@@ -90,6 +108,25 @@ func (app *App) create_account(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respondWithJSON(w, http.StatusCreated, account)
+
+}
+
+// ** EMAIL ** WEB HANDLERS
+
+func (app *App) get_next_email(w http.ResponseWriter, r *http.Request) {
+
+	type Result struct {
+		Id    int
+		Email string
+	}
+
+	var result Result
+	var account Accounts
+
+	app.Db.Where("status = ?", "").Order("email desc").Limit(2).Find(&account).Scan(&result)
+	// app.Db.Table("accounts").Select("id, email").Limit(1).Scan(&result)
+
+	respondWithJSON(w, http.StatusOK, &result)
 
 }
 
