@@ -123,7 +123,7 @@ func (app *App) get_next_email(w http.ResponseWriter, r *http.Request) {
 	var result Result
 	var account Accounts
 
-	app.Db.Where("status = ?", "").Order("email desc").Limit(2).Find(&account).Scan(&result)
+	app.Db.Where("status = ?", "").Order("email desc").Limit(1).Find(&account).Scan(&result)
 	// app.Db.Table("accounts").Select("id, email").Limit(1).Scan(&result)
 
 	respondWithJSON(w, http.StatusOK, &result)
