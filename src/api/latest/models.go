@@ -113,6 +113,27 @@ func (app *App) create_account(w http.ResponseWriter, r *http.Request) {
 
 // ** EMAIL ** WEB HANDLERS
 
+func (app *App) GetEmail(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "invalid id")
+		return
+	}
+
+	account := Accounts{Model: gorm.Model{ID: uint(id)}}
+
+	if RecordNotFound := account.get(app.Db); RecordNotFound {
+		respondWithError(w, 404, "record not found")
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, account)
+
+}
+
 func (app *App) GetEmails(w http.ResponseWriter, r *http.Request) {
 
 	type Result struct {

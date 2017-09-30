@@ -89,6 +89,12 @@ func (app *App) InitRoutes() *mux.Router {
 			app.GetEmails},
 
 		Route{
+			"email-get",
+			"GET",
+			"/email/{id:[0-9]+}",
+			app.GetEmail},
+
+		Route{
 			"account-get-next-available-email-for-account-creation",
 			"GET",
 			"/email/next",
