@@ -113,6 +113,21 @@ func (app *App) create_account(w http.ResponseWriter, r *http.Request) {
 
 // ** EMAIL ** WEB HANDLERS
 
+func (app *App) get_emails(w http.ResponseWriter, r *http.Request) {
+
+	type Result struct {
+		Id         int
+		Email      string
+		Account_Id int
+	}
+
+	var result []Result
+	app.Db.Table("accounts").Select("id, email, account_id").Order("email desc").Scan(&result)
+
+	respondWithJSON(w, http.StatusOK, &result)
+
+}
+
 func (app *App) get_next_email(w http.ResponseWriter, r *http.Request) {
 
 	type Result struct {

@@ -83,9 +83,15 @@ func (app *App) InitRoutes() *mux.Router {
 			app.get_accounts},
 
 		Route{
-			"account-get-email",
+			"account-get-all-emails",
 			"GET",
-			"/email",
+			"/emails",
+			app.get_emails},
+
+		Route{
+			"account-get-next-available-email-for-account-creation",
+			"GET",
+			"/email/next",
 			app.get_next_email},
 
 		// ** POSTS
