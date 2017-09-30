@@ -113,7 +113,7 @@ func (app *App) create_account(w http.ResponseWriter, r *http.Request) {
 
 // ** EMAIL ** WEB HANDLERS
 
-func (app *App) get_emails(w http.ResponseWriter, r *http.Request) {
+func (app *App) GetEmails(w http.ResponseWriter, r *http.Request) {
 
 	type Result struct {
 		Id         int
@@ -128,7 +128,7 @@ func (app *App) get_emails(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (app *App) get_next_email(w http.ResponseWriter, r *http.Request) {
+func (app *App) GetNextEmail(w http.ResponseWriter, r *http.Request) {
 
 	type Result struct {
 		Id    int
